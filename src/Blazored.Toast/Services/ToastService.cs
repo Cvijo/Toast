@@ -10,6 +10,9 @@ public class ToastService : IToastService
     /// </summary>
     public event Action<ToastLevel, RenderFragment, Action<ToastSettings>?>? OnShow;
 
+    public event Func<ToastLevel, RenderFragment, Action<ToastSettings>?, Guid>? OnShowWithId;
+    public event Func<ToastLevel, RenderFragment, Action<ToastSettings>?, ToastInstance>? OnShowWithInstance;
+
     /// <summary>
     /// A event that will be invoked when clearing all toasts
     /// </summary>
@@ -24,6 +27,8 @@ public class ToastService : IToastService
     /// A event that will be invoked when clearing toasts
     /// </summary>
     public event Action<ToastLevel>? OnClearToasts;
+
+    public event Action<Guid>? OnClearToast;
 
     /// <summary>
     /// A event that will be invoked when clearing custom toast components
@@ -123,6 +128,12 @@ public class ToastService : IToastService
     public void ShowToast(ToastLevel level, RenderFragment message, Action<ToastSettings>? settings = null)
         => OnShow?.Invoke(level, message, settings);
 
+    public Guid? ShowToastWithId(ToastLevel level, RenderFragment message, Action<ToastSettings>? settings = null)
+    => OnShowWithId?.Invoke(level, message, settings);
+
+    public ToastInstance? ShowToastWithInstance(ToastLevel level, RenderFragment message, Action<ToastSettings>? settings = null)
+    => OnShowWithInstance?.Invoke(level, message, settings);
+
     /// <summary>
     /// Shows the toast with the component type
     /// </summary>
@@ -181,6 +192,8 @@ public class ToastService : IToastService
     public void ClearToasts(ToastLevel toastLevel)
         => OnClearToasts?.Invoke(toastLevel);
 
+    public void ClearToast(Guid id)
+        => OnClearToast?.Invoke(id);
     /// <summary>
     /// Removes all toasts with toast level warning
     /// </summary>

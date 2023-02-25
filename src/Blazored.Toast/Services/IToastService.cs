@@ -10,6 +10,9 @@ public interface IToastService
     /// </summary>
     event Action<ToastLevel, RenderFragment, Action<ToastSettings>?> OnShow;
 
+    event Func<ToastLevel, RenderFragment, Action<ToastSettings>?, Guid> OnShowWithId;
+    event Func<ToastLevel, RenderFragment, Action<ToastSettings>?, ToastInstance> OnShowWithInstance;
+
     /// <summary>
     /// A event that will be invoked to clear all toasts
     /// </summary>
@@ -19,6 +22,8 @@ public interface IToastService
     /// A event that will be invoked to clear toast of specified level
     /// </summary>
     event Action<ToastLevel>? OnClearToasts;
+
+    public event Action<Guid>? OnClearToast;
 
     /// <summary>
     /// A event that will be invoked to clear custom toast components
@@ -136,6 +141,10 @@ public interface IToastService
     /// /// <param name="settings">Settings to configure the toast instance</param>
     void ShowToast<TComponent>(ToastParameters parameters, Action<ToastSettings> settings) where TComponent : IComponent;
 
+    public Guid? ShowToastWithId(ToastLevel level, RenderFragment message, Action<ToastSettings>? settings = null);
+
+    public ToastInstance? ShowToastWithInstance(ToastLevel level, RenderFragment message, Action<ToastSettings>? settings = null);
+
     /// <summary>
     /// Removes all toasts
     /// </summary>
@@ -145,6 +154,9 @@ public interface IToastService
     /// Removes all toasts with a specified <paramref name="toastLevel"/>.
     /// </summary>
     void ClearToasts(ToastLevel toastLevel);
+
+
+    void ClearToast(Guid id);
 
     /// <summary>
     /// Removes all toasts with toast level warning

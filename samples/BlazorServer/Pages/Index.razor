@@ -1,4 +1,6 @@
 ﻿@page "/"
+@using System.Diagnostics;
+@using Blazored.Toast.Configuration;
 @inject IToastService toastService
 @inject NavigationManager NavigationManager
 
@@ -41,12 +43,43 @@
 <button class="btn btn-warning" @onclick="ClearQueueWarnings">Clear queued Warning Toasts</button>
 <button class="btn btn-info" @onclick="ClearQueueInfos">Clear queued Info Toasts</button>
 
+<hr />
+<button class="btn btn-primary" @onclick="AddToast" >Add toast</button>
+<button class="btn btn-primary" @onclick="ClearToasts">Clear toast</button>
+
+@if(toastList.Any())
+{
+    <ul>
+        @foreach( var toast in toastList)
+    {
+            <li>
+                @toast.Id
+                <button class="btn btn-warning btn-sm" @onclick="@(() => CloseToast(toast.Id))">Close</button>
+                <button class="btn btn-warning btn-sm" @onclick="@(() => CloseInstanceToast(toast))">Close</button>
+            </li>
+        
+    }
+    </ul>
+}
+
 @code
 {
     private ToastParameters _toastParameters;
 
+
+    private void ttt(ToastLevel level, RenderFragment message, Action<ToastSettings>? toastSettings)
+    {
+        Debug.WriteLine(toastSettings);
+        InvokeAsync(() =>
+        {
+            Debug.WriteLine(message);
+                StateHasChanged();
+        });
+    }
+
     protected override void OnInitialized()
     {
+        toastService.OnShow += ttt;
         _toastParameters = new ToastParameters();
         _toastParameters.Add(nameof(MyToastComponent.Title), "I'm a custom toast component with parameters");
         _toastParameters.Add(nameof(MyToastComponent.ToastParam), "I'm a parameter");
@@ -57,6 +90,35 @@
         RenderFragment message =@<text>I'm an <em>INFO</em> message with some <strong>bold</strong> text</text>
     ;
         toastService.ShowToast(ToastLevel.Info, message);
+    }
+
+
+    private List<ToastInstance> toastList {get;set;} = new();
+    private async Task AddToast()
+    {
+        
+
+        var instance = toastService.ShowToastWithInstance(ToastLevel.Warning, builder => builder.AddContent(0, "aaaa  asd asd asd"), settings => settings.Timeout = 10);
+        toastList.Add(instance);
+        await InvokeAsync(StateHasChanged);
+        
+
+    }
+    private void ClearToasts()
+    {
+        toastList.Clear();
+    }
+    private void CloseToast(Guid guid)
+    {
+        toastService.ClearToast(guid);
+        toastList.RemoveAll(x=> x.Id ==guid);
+    }
+
+
+    private void CloseInstanceToast(ToastInstance instance)
+    {
+        instance.Close();
+        toastList.Remove(instance);
     }
 
     private void ClearAll()

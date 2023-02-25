@@ -22,33 +22,33 @@
     border-top: 6px solid #2563eb;
 }
 
-.blazored-toast-info .blazored-toast-icon {
-    color: #2563eb;
-}
+    .blazored-toast-info .blazored-toast-icon {
+        color: #2563eb;
+    }
 
 .blazored-toast-success {
     border-top: 6px solid #16a34a;
 }
 
-.blazored-toast-success .blazored-toast-icon {
-    color: #16a34a;
-}
+    .blazored-toast-success .blazored-toast-icon {
+        color: #16a34a;
+    }
 
 .blazored-toast-warning {
     border-top: 6px solid #eab308;
 }
 
-.blazored-toast-warning .blazored-toast-icon {
-    color: #eab308;
-}
+    .blazored-toast-warning .blazored-toast-icon {
+        color: #eab308;
+    }
 
 .blazored-toast-error {
     border-top: 6px solid #dc2626;
 }
 
-.blazored-toast-error .blazored-toast-icon {
-    color: #dc2626;
-}
+    .blazored-toast-error .blazored-toast-icon {
+        color: #dc2626;
+    }
 
 .blazored-toast-icon {
     display: flex;
@@ -84,9 +84,9 @@
     font-size: 0.9rem;
 }
 
-.blazored-toast .blazored-toast-close:hover {
-    color: inherit;
-}
+    .blazored-toast .blazored-toast-close:hover {
+        color: inherit;
+    }
 
 .blazored-toast .blazored-toast-progressbar {
     position: absolute;
@@ -98,13 +98,18 @@
     border-bottom-right-radius: .375rem;
 }
 
-.blazored-toast .blazored-toast-progressbar > span {
-    position: absolute;
-    filter: brightness(75%);
-    height: 6px;
-    border-bottom-left-radius: .375rem;
-    background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
-    transition: all .1s linear;
+    .blazored-toast .blazored-toast-progressbar > span {
+        position: absolute;
+        filter: brightness(75%);
+        height: 6px;
+        left:0;
+        border-bottom-left-radius: .375rem;
+        background-image: linear-gradient(rgba(0, 0, 0, 0.1) 0 0);
+        transition: all .1s linear;
+    }
+
+[dir=rtl] .blazored-toast .blazored-toast-progressbar > span{
+    right: 0;
 }
 
 .blazored-toast-action {
